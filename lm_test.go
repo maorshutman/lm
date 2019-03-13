@@ -126,7 +126,7 @@ type LMTest struct {
 
 func TestLM(t *testing.T) {
 	// Constract a linear least squares probelm.
-	trueParam := []float64{0.7, 0.8, 5.6, -42.0}
+	trueParam := []float64{0.7, 0.8, 5.6, -40.8}
 	nData := 50
 	noise := 1e-2
 	ls := constructLeastSquares(trueParam, noise, true, nData, rand.NewSource(1))

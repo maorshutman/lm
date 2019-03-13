@@ -32,6 +32,7 @@ type Result struct {
 	Status optimize.Status
 }
 
+// NumJac is used 
 type NumJac struct {
 	Func func(dst, param []float64)
 }
