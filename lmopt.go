@@ -1,5 +1,13 @@
-// package lm implements optimization routines for non-linear least squares problems
-// using the Levenberg-Marquardt method.
+/*
+Package lm implements optimization routines for non-linear least squares problems
+using the Levenberg-Marquardt method. 
+
+Given function f:Rn -> Rm, where m is the numner of non-linear functions and n parameters, 
+the Levenberg-Maruqrdt method is used to seek a point X that minimizes F(x) = 0.5 * f.T * f. 
+
+The user supplies a non-linear function. The jacobian may also be supplied by the user or 
+approximated by finite differences.
+*/
 package lm
 
 import (
@@ -32,7 +40,9 @@ type Result struct {
 	Status optimize.Status
 }
 
-// NumJac is used 
+// NumJac is used if the user doesn't wish to provide a fucnction that evaluates 
+// the jacobian matrix. NumJac provides a method Jac that coputes the jacobian matrix
+// by finite differences.
 type NumJac struct {
 	Func func(dst, param []float64)
 }
@@ -87,8 +97,13 @@ func calcRho(fParams []float64, fParamsNew []float64, h *mat.VecDense, grad *mat
 }
 
 // LM is a function that solves non-linear least squares problems using the Levenberg-Marquardt
-// Method. The implementation follows: Madsen, Kaj, Hans Bruun Nielsen, and Ole Tingleff.
-// "Methods for non-linear least squares problems.", 2nd edition, 2004.
+// Method. 
+//
+// References:
+//  - Madsen, Kaj, Hans Bruun Nielsen, and Ole Tingleff. "Methods for non-linear least squares
+//    problems.", 2nd edition, 2004.
+//  - Lourakis, Manolis. "A Brief Description of the Levenberg-Marquardt Algorithm Implemened 
+//    by levmar", 2005.
 func LM(problem LMProblem, settings *Settings) (*Result, error) {
 	var set Settings
 	if settings != nil {
@@ -193,7 +208,7 @@ type LMProblem struct {
 	Size int
 	// Func computes the function value at params.
 	Func func(dst, param []float64)
-	// Jac computes the jacobian of Func.
+	// Jac computes the jacobian matrix of Func.
 	Jac func(dst *mat.Dense, param []float64)
 	// InitParams stores the users inital guess. Defaults to the zero vector when nil.
 	InitParams []float64

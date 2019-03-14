@@ -91,6 +91,8 @@ func constructLeastSquares(trueParam []float64, noise float64, offset bool, nDat
 	}
 }
 
+// Powell, M. J. D. "A Hybrid Method for Nonlinear Equations", in P. Rabinowitz, ed.,
+// "Numerical Methods for Nonlinear Algebraic Equations", Gordon and Breach, 1970.
 func powellFunc(dst, x []float64) {
 	dst[0] = x[0]
 	dst[1] = 10*x[0]/(x[0]+0.1) + 2*x[1]*x[1]
@@ -103,6 +105,9 @@ func powellJac(dst *mat.Dense, x []float64) {
 	dst.Set(1, 1, 4*x[1])
 }
 
+// The following test functions are taken form:
+// - More, J., Garbow, B.S., Hillstrom, K.E.: Testing unconstrained optimization software. 
+//   ACM Trans Math Softw 7 (1981), 17-41 
 func bealeFunc(dst, x []float64) {
 	dst[0] = 1.5 - x[0]*(1-x[1])
 	dst[1] = 2.25 - x[0]*(1-math.Pow(x[1], 2))
@@ -115,6 +120,11 @@ func biggsEXP6Func(dst, x []float64) {
 		y := math.Exp(-z) - 5*math.Exp(-10*z) + 3*math.Exp(-4*z)
 		dst[i] = x[2]*math.Exp(-x[0]*z) - x[3]*math.Exp(-x[1]*z) + x[5]*math.Exp(-x[4]*z) - y
 	}
+}
+
+func extendedRosenbrockFunc(dst, x []float64) {
+	dst[0] = 10*(x[1]-x[0]*x[0])
+	dst[1] = 1-x[0]
 }
 
 type LMTest struct {
@@ -135,6 +145,7 @@ func TestLM(t *testing.T) {
 	// Numerical Jacobians for problems.
 	bealeNumJac := NumJac{Func: bealeFunc}
 	biggsNumJac := NumJac{Func: biggsEXP6Func}
+	rosenbrockNumJac := NumJac{Func: extendedRosenbrockFunc}
 
 	problems := []LMTest{
 		// Simple linear fit problem.
@@ -199,6 +210,22 @@ func TestLM(t *testing.T) {
 			},
 			expected: []float64{1, 10, 1, 5, 4, 3},
 			tol:      1e-3,
+			settings: Settings{Iterations: 100, ObjectiveTol: 1e-16},
+		},
+		// Extended Rosenbrock problem.
+		LMTest{
+			prob: LMProblem{
+				Dim:        2,
+				Size:       2,
+				Func:       extendedRosenbrockFunc,
+				Jac:        rosenbrockNumJac.Jac,
+				InitParams: []float64{-20, 150},
+				Tau:        1e-6,
+				Eps1:       1e-8,
+				Eps2:       1e-8,
+			},
+			expected: []float64{1, 1},
+			tol:      1e-6,
 			settings: Settings{Iterations: 100, ObjectiveTol: 1e-16},
 		},
 	}
