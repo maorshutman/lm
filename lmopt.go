@@ -15,10 +15,8 @@ import (
 
 	"gonum.org/v1/gonum/floats"
 	"gonum.org/v1/gonum/mat"
-
-	"gonum.org/v1/gonum/optimize"
-
 	"gonum.org/v1/gonum/diff/fd"
+	"gonum.org/v1/gonum/optimize"
 )
 
 type Settings struct {
@@ -199,7 +197,7 @@ func LM(problem LMProblem, settings *Settings) (*Result, error) {
 	}, nil
 }
 
-// LMProblem is used for running LM optomization. The objective function is
+// LMProblem is used for running LM optimization. The objective function is
 // F = 0.5 * f.T * f, where f:Rn -> Rm and m >= n.
 type LMProblem struct {
 	// Dim is the dimension of the parameters of the problem (n).
