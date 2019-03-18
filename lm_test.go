@@ -106,7 +106,7 @@ func powellJac(dst *mat.Dense, x []float64) {
 
 // The following test functions are taken form:
 // - More, J., Garbow, B.S., Hillstrom, K.E.: Testing unconstrained optimization software. 
-//   ACM Trans Math Softw 7 (1981), 17-41 
+//   ACM Trans Math Softw 7 (1981), 17-41.
 func bealeFunc(dst, x []float64) {
 	dst[0] = 1.5 - x[0]*(1-x[1])
 	dst[1] = 2.25 - x[0]*(1-math.Pow(x[1], 2))

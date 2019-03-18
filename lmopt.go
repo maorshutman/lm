@@ -2,10 +2,10 @@
 Package lm implements optimization routines for non-linear least squares problems
 using the Levenberg-Marquardt method. 
 
-Given function f:Rn -> Rm, where m is the numner of non-linear functions and n parameters, 
-the Levenberg-Maruqrdt method is used to seek a point X that minimizes F(x) = 0.5 * f.T * f. 
+Given function f:Rn -> Rm, where m is the number of non-linear functions and n parameters,
+the Levenberg-Marquardt method is used to seek a point X that minimizes F(x) = 0.5 * f.T * f. 
 
-The user supplies a non-linear function. The jacobian may also be supplied by the user or 
+The user supplies a non-linear function. The jacobian may also be supplied by the user or
 approximated by finite differences.
 */
 package lm
@@ -39,7 +39,7 @@ type Result struct {
 }
 
 // NumJac is used if the user doesn't wish to provide a fucnction that evaluates 
-// the jacobian matrix. NumJac provides a method Jac that coputes the jacobian matrix
+// the jacobian matrix. NumJac provides a method Jac that computes the jacobian matrix
 // by finite differences.
 type NumJac struct {
 	Func func(dst, param []float64)
