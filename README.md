@@ -2,7 +2,7 @@
 Package lm solves non-linear least squares problems using the Levenberg-Marquardt method.
 
 # Example
-* Define a fucntion:
+* Define a function:
 ```go
 func biggsEXP6Func(dst, x []float64) {
 	for i := 0; i < 13; i++ {
